@@ -104,35 +104,35 @@ export default function HelpPage() {
           </aside>
 
           {/* Center content */}
-          <main className="flex flex-1 justify-center overflow-y-auto py-2">
-          <div className="w-full max-w-2xl space-y-4">
+          <main className="flex-1 overflow-y-auto">
+          <div className="flex h-full w-full flex-col space-y-3">
             {/* FAQ Section */}
-            <div className="glass-panel p-5">
-              <h2 className="mb-4 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            <div className="glass-panel flex-1 p-4">
+              <h2 className="mb-3 text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 Frequently Asked Questions
               </h2>
 
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 {faqItems.map((item, index) => {
                   const Icon = item.icon
                   const isExpanded = expandedIndex === index
 
                   return (
-                    <div key={index} className="overflow-hidden rounded-lg border border-border/30 bg-card/30 transition-colors hover:border-border/50">
+                    <div key={index} className="overflow-hidden rounded-md border border-border/30 bg-card/30 transition-colors hover:border-border/50">
                       <button
                         onClick={() => setExpandedIndex(isExpanded ? null : index)}
-                        className="flex w-full items-center gap-3 p-3 text-left"
+                        className="flex w-full items-center gap-2 p-2 text-left"
                       >
-                        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${isExpanded ? "bg-primary/20" : "bg-primary/10"}`}>
-                          <Icon className="h-4 w-4 text-primary" />
+                        <div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md ${isExpanded ? "bg-primary/20" : "bg-primary/10"}`}>
+                          <Icon className="h-3 w-3 text-primary" />
                         </div>
-                        <span className="flex-1 text-sm font-medium text-foreground">{item.question}</span>
-                        <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+                        <span className="flex-1 text-xs font-medium text-foreground">{item.question}</span>
+                        <ChevronDown className={`h-3 w-3 text-muted-foreground transition-transform ${isExpanded ? "rotate-180" : ""}`} />
                       </button>
 
                       {isExpanded && (
-                        <div className="border-t border-border/20 px-3 pb-3 pt-2">
-                          <p className="pl-11 text-sm leading-relaxed text-muted-foreground">
+                        <div className="border-t border-border/20 px-2 pb-2 pt-1.5">
+                          <p className="pl-8 text-[11px] leading-relaxed text-muted-foreground">
                             {item.answer}
                           </p>
                         </div>
@@ -144,14 +144,14 @@ export default function HelpPage() {
             </div>
 
             {/* Support Card */}
-            <div className="glass-panel p-5">
-              <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
-                  <MessageCircle className="h-6 w-6 text-primary" />
+            <div className="glass-panel shrink-0 p-3">
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                  <MessageCircle className="h-4 w-4 text-primary" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="mb-1 text-base font-bold text-foreground">Need more help?</h3>
-                  <p className="text-xs text-muted-foreground">
+                  <h3 className="text-sm font-bold text-foreground">Need more help?</h3>
+                  <p className="text-[10px] text-muted-foreground">
                     Our support team is available 24/7 on Telegram.
                   </p>
                 </div>
@@ -159,13 +159,13 @@ export default function HelpPage() {
                   href="https://t.me/support"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 rounded-xl bg-[#229ED9] px-4 py-2 font-semibold text-white transition-all hover:bg-[#1a8ac4]"
+                  className="flex items-center gap-1.5 rounded-lg bg-[#229ED9] px-3 py-1.5 text-xs font-semibold text-white transition-all hover:bg-[#1a8ac4]"
                 >
-                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                  <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
                   </svg>
                   Telegram
-                  <ExternalLink className="h-3.5 w-3.5 opacity-60" />
+                  <ExternalLink className="h-3 w-3 opacity-60" />
                 </a>
               </div>
             </div>
@@ -183,7 +183,7 @@ export default function HelpPage() {
 
       {/* Footer - Only on Help page */}
       <footer className="relative z-10 border-t border-border/20 bg-card/40 backdrop-blur-sm">
-        <div className="mx-auto flex h-12 max-w-6xl items-center justify-between px-6">
+        <div className="mx-auto flex h-10 max-w-6xl items-center justify-between px-6">
           <div className="flex items-center gap-3">
             <Logo365 className="h-5 w-5" />
             <p className="max-w-[200px] text-[9px] leading-tight text-muted-foreground/60">
