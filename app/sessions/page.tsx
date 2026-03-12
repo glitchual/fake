@@ -31,14 +31,14 @@ export default function SessionsPage() {
 
   return (
     <AppLayout activeNav="SESSIONS">
-      <div className="w-full max-w-3xl">
-        <div className="glass-panel panel-glow p-6">
+      <div className="flex h-full w-full max-w-3xl flex-col">
+        <div className="glass-panel panel-glow flex flex-1 flex-col p-6">
           <h2 className="text-center text-2xl font-bold tracking-[0.25em] text-foreground">
             SESSIONS
           </h2>
 
           {/* Sessions List */}
-          <div className="mt-6 space-y-3">
+          <div className="mt-6 flex-1 space-y-3 overflow-y-auto">
             {sessions.map((session) => (
               <SessionItem 
                 key={session.id}
@@ -74,7 +74,6 @@ function SessionItem({ session, onStop }: { session: Session; onStop: () => void
 
   return (
     <div className="flex items-center gap-4 rounded-xl border border-border/30 bg-card/30 px-5 py-4 transition-colors hover:border-border/50">
-      {/* Status Icon */}
       <div
         className={`flex h-10 w-10 items-center justify-center rounded-full ${
           isRunning ? "bg-primary/20" : "bg-muted/50"
@@ -87,13 +86,11 @@ function SessionItem({ session, onStop }: { session: Session; onStop: () => void
         )}
       </div>
 
-      {/* Session Info */}
       <div className="flex-1">
         <p className="font-medium text-foreground">{session.name}</p>
         <p className="text-xs text-muted-foreground">Started: {session.startedAt}</p>
       </div>
 
-      {/* Status & Actions */}
       <div className="flex items-center gap-3">
         {isRunning ? (
           <>

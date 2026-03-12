@@ -52,16 +52,15 @@ export default function Home() {
 
   return (
     <AppLayout activeNav="SPAMMER">
-      <div className="w-full max-w-3xl">
-        {/* Main Panel */}
-        <div className="glass-panel panel-glow p-6">
+      <div className="flex h-full w-full max-w-3xl flex-col">
+        <div className="glass-panel panel-glow flex flex-1 flex-col p-6">
           <h2 className="text-center text-2xl font-bold tracking-[0.25em] text-foreground">
             WORKFLOW
           </h2>
 
-          <div className="mt-6 grid gap-6 lg:grid-cols-2">
+          <div className="mt-6 flex flex-1 flex-col gap-6 lg:flex-row">
             {/* Left - Upload and Console */}
-            <div className="space-y-4">
+            <div className="flex flex-1 flex-col gap-4">
               {/* Upload Button */}
               <input
                 ref={fileInputRef}
@@ -72,7 +71,7 @@ export default function Home() {
               />
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="flex w-full items-center justify-center gap-3 rounded-lg border border-border/50 bg-card/50 px-5 py-3.5 text-sm font-medium text-foreground transition-all hover:border-border hover:bg-card/70"
+                className="flex items-center justify-center gap-3 rounded-lg border border-border/50 bg-card/50 px-5 py-3.5 text-sm font-medium text-foreground transition-all hover:border-border hover:bg-card/70"
               >
                 <Upload className="h-5 w-5 text-muted-foreground" />
                 Upload Files
@@ -84,11 +83,11 @@ export default function Home() {
               </button>
 
               {/* Log Console */}
-              <div className="rounded-lg border border-border/30 bg-background/50 p-4">
+              <div className="flex flex-1 flex-col rounded-lg border border-border/30 bg-background/50 p-4">
                 <p className="mb-2 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70">
                   Log Console
                 </p>
-                <div className="h-[120px] overflow-y-auto rounded bg-background/80 p-2.5 font-mono text-[11px]">
+                <div className="flex-1 overflow-y-auto rounded bg-background/80 p-2.5 font-mono text-[11px]">
                   {logs.map((log, index) => (
                     <div
                       key={index}
@@ -109,11 +108,11 @@ export default function Home() {
             </div>
 
             {/* Right - Start/Stop Button */}
-            <div className="flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center lg:w-1/3">
               {isRunning ? (
                 <button
                   onClick={handleStop}
-                  className="group relative flex items-center justify-center gap-2 overflow-hidden rounded-full bg-destructive px-14 py-4 text-base font-bold tracking-wider text-destructive-foreground transition-all hover:bg-destructive/90"
+                  className="flex items-center justify-center gap-2 rounded-full bg-destructive px-14 py-4 text-base font-bold tracking-wider text-destructive-foreground transition-all hover:bg-destructive/90"
                 >
                   <Square className="h-5 w-5 fill-current" />
                   STOP
@@ -121,10 +120,8 @@ export default function Home() {
               ) : (
                 <button
                   onClick={handleStart}
-                  className="group relative flex items-center justify-center gap-2 overflow-hidden rounded-full bg-primary px-14 py-4 text-base font-bold tracking-wider text-primary-foreground transition-all hover:shadow-[0_0_30px_rgba(200,255,46,0.4)]"
+                  className="flex items-center justify-center gap-2 rounded-full bg-primary px-14 py-4 text-base font-bold tracking-wider text-primary-foreground transition-all hover:brightness-110"
                 >
-                  {/* Shine effect */}
-                  <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
                   <Play className="h-5 w-5 fill-current" />
                   START
                 </button>

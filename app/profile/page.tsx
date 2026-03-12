@@ -27,17 +27,13 @@ export default function ProfilePage() {
 
   return (
     <AppLayout activeNav="PROFILE">
-      <div className="w-full max-w-3xl">
-        <div className="glass-panel panel-glow overflow-hidden p-6">
-          {/* Top accent line */}
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent" />
-
+      <div className="flex h-full w-full max-w-3xl flex-col">
+        <div className="glass-panel panel-glow flex flex-1 flex-col p-6">
           {/* Profile Header */}
           <div className="flex flex-col items-center gap-4 md:flex-row md:items-start md:gap-6">
             {/* Avatar */}
-            <div className="relative">
-              <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-primary/30 to-primary/10 blur-lg" />
-              <div className="relative flex h-20 w-20 items-center justify-center rounded-full border-2 border-primary/30 bg-gradient-to-br from-card to-background">
+            <div className="relative shrink-0">
+              <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-primary/30 bg-gradient-to-br from-card to-background">
                 <User className="h-10 w-10 text-primary" />
                 <div className="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full border-2 border-background bg-primary">
                   <Crown className="h-3.5 w-3.5 text-primary-foreground" />
@@ -49,7 +45,7 @@ export default function ProfilePage() {
             <div className="flex-1 text-center md:text-left">
               <h2 className="text-xl font-bold text-foreground">{userData.nickname}</h2>
               <div className="mt-1 flex items-center justify-center gap-2 md:justify-start">
-                <span className="text-sm text-muted-foreground">{userData.id}</span>
+                <span className="text-sm text-muted-foreground select-text">{userData.id}</span>
                 <button onClick={copyUserId} className="rounded p-1 transition-colors hover:bg-card">
                   {copied ? (
                     <Check className="h-3.5 w-3.5 text-primary" />
@@ -67,9 +63,9 @@ export default function ProfilePage() {
           </div>
 
           {/* Stats Grid */}
-          <div className="mt-6 grid gap-3 md:grid-cols-3">
+          <div className="mt-6 grid flex-1 gap-3 md:grid-cols-3">
             {/* Subscription */}
-            <div className="rounded-xl border border-border/50 bg-card/50 p-4 transition-colors hover:border-primary/20">
+            <div className="flex flex-col rounded-xl border border-border/50 bg-card/50 p-4">
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Clock className="h-4 w-4" />
                 <span className="text-[10px] uppercase tracking-wider">Subscription</span>
@@ -78,28 +74,30 @@ export default function ProfilePage() {
                 {userData.subscriptionDays}
                 <span className="ml-1 text-sm font-normal text-muted-foreground">days</span>
               </p>
-              <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-border/50">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-primary to-primary/60"
-                  style={{ width: `${(userData.subscriptionDays / 90) * 100}%` }}
-                />
+              <div className="mt-auto pt-3">
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-border/50">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-primary to-primary/60"
+                    style={{ width: `${(userData.subscriptionDays / 90) * 100}%` }}
+                  />
+                </div>
               </div>
             </div>
 
             {/* Balance */}
-            <div className="rounded-xl border border-border/50 bg-card/50 p-4 transition-colors hover:border-primary/20">
+            <div className="flex flex-col rounded-xl border border-border/50 bg-card/50 p-4">
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Wallet className="h-4 w-4" />
                 <span className="text-[10px] uppercase tracking-wider">Balance</span>
               </div>
               <p className="mt-2 text-2xl font-bold text-foreground">${userData.balance}</p>
-              <p className="mt-1 text-[10px] text-muted-foreground">
+              <p className="mt-auto pt-2 text-[10px] text-muted-foreground">
                 Total deposited: ${userData.totalDeposited}
               </p>
             </div>
 
             {/* Activity */}
-            <div className="rounded-xl border border-border/50 bg-card/50 p-4 transition-colors hover:border-primary/20">
+            <div className="flex flex-col rounded-xl border border-border/50 bg-card/50 p-4">
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Zap className="h-4 w-4" />
                 <span className="text-[10px] uppercase tracking-wider">Activity</span>
@@ -123,12 +121,11 @@ export default function ProfilePage() {
               href="https://t.me/support_365spammer"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-primary px-8 py-3.5 font-bold text-primary-foreground transition-all hover:shadow-[0_0_30px_rgba(200,255,46,0.4)]"
+              className="inline-flex items-center gap-3 rounded-full bg-primary px-8 py-3.5 font-bold text-primary-foreground transition-all hover:brightness-110"
             >
-              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
               <Wallet className="h-5 w-5" />
               <span className="tracking-wide">DEPOSIT BALANCE</span>
-              <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ExternalLink className="h-4 w-4" />
             </a>
           </div>
 
