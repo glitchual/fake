@@ -31,7 +31,7 @@ export function AppLayout({ children, activeNav }: AppLayoutProps) {
       {/* Header */}
       <header className="relative z-10 flex items-center justify-between px-6 py-3">
         <Link href="/" className="shrink-0">
-          <Logo365 className="h-8 w-8 max-h-[120px] max-w-[120px]" />
+          <Logo365 className="h-[80px] w-[80px]" />
         </Link>
 
         <nav className="flex items-center gap-6">
@@ -68,9 +68,9 @@ export function AppLayout({ children, activeNav }: AppLayoutProps) {
       </header>
 
       {/* Content Area - fills remaining space */}
-      <div className="relative z-10 flex flex-1 gap-3 px-4 pb-4">
+      <div className="relative z-10 flex flex-1 gap-2 px-2 pb-2">
         {/* Left AD panels */}
-        <aside className="hidden w-[160px] shrink-0 flex-col gap-3 lg:flex">
+        <aside className="hidden w-[160px] shrink-0 flex-col gap-2 lg:flex">
           <div className="glass-panel flex flex-1 items-center justify-center">
             <span className="text-xs font-semibold tracking-wider text-muted-foreground/30">AD</span>
           </div>
