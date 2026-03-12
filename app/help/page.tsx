@@ -55,13 +55,9 @@ export default function HelpPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/90" />
       </div>
 
-      {/* Header */}
-      <header className="relative z-10 flex items-center justify-between px-6 py-3">
-        <Link href="/" className="shrink-0">
-          <Logo365 className="h-16 w-16" />
-        </Link>
-
-        <nav className="flex items-center gap-6">
+      {/* Header - Compact */}
+      <header className="relative z-10 flex items-center justify-center gap-8 px-6 py-4">
+        <nav className="flex items-center gap-8">
           {navItems.map((item) => (
             <Link
               key={item.label}
@@ -82,26 +78,26 @@ export default function HelpPage() {
           ))}
         </nav>
 
-        <div className="w-56">
+        <div className="absolute right-6">
           <div className="flex items-center gap-2 rounded-full border border-border/40 bg-card/50 px-3 py-1.5">
             <Search className="h-3.5 w-3.5 text-muted-foreground/70" />
             <input
               type="text"
               placeholder="find something in settings.."
-              className="w-full bg-transparent text-xs text-foreground placeholder:text-muted-foreground/60 focus:outline-none"
+              className="w-48 bg-transparent text-xs text-foreground placeholder:text-muted-foreground/60 focus:outline-none"
             />
           </div>
         </div>
       </header>
 
       {/* Content Area */}
-      <div className="relative z-10 flex flex-1 gap-0 overflow-hidden px-1 pb-1">
-        {/* Left AD panels */}
-        <aside className="hidden w-[160px] shrink-0 flex-col gap-0 lg:flex">
-          <div className="glass-panel flex flex-1 items-center justify-center">
+      <div className="relative z-10 flex flex-1 gap-[3px] overflow-hidden px-3 pb-3">
+        {/* Left AD panels - Top 40%, Bottom 60% */}
+        <aside className="hidden w-[140px] shrink-0 flex-col gap-[3px] lg:flex">
+          <div className="glass-panel flex h-[40%] items-center justify-center">
             <span className="text-xs font-semibold tracking-wider text-muted-foreground/30">AD</span>
           </div>
-          <div className="glass-panel flex flex-1 items-center justify-center">
+          <div className="glass-panel flex h-[60%] items-center justify-center">
             <span className="text-xs font-semibold tracking-wider text-muted-foreground/30">AD</span>
           </div>
         </aside>
@@ -175,8 +171,8 @@ export default function HelpPage() {
           </div>
         </main>
 
-        {/* Right AD panel */}
-        <aside className="hidden w-[160px] shrink-0 lg:flex">
+        {/* Right AD panel - Full height */}
+        <aside className="hidden w-[140px] shrink-0 lg:flex">
           <div className="glass-panel flex h-full w-full items-center justify-center">
             <span className="text-xs font-semibold tracking-wider text-muted-foreground/30">AD</span>
           </div>
