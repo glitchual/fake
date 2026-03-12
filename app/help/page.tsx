@@ -104,73 +104,117 @@ export default function HelpPage() {
           </aside>
 
           {/* Center content */}
-          <main className="flex-1 overflow-y-auto">
-          <div className="flex h-full w-full flex-col space-y-3">
-            {/* FAQ Section */}
-            <div className="glass-panel flex-1 p-4">
-              <h2 className="mb-3 text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Frequently Asked Questions
-              </h2>
+          <main className="glass-panel panel-glow flex flex-1 flex-col overflow-hidden p-4">
+            {/* Header */}
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-bold tracking-[0.2em] text-foreground">HELP CENTER</h2>
+              <div className="flex items-center gap-2">
+                <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-medium text-emerald-400">Online</span>
+                <span className="text-[10px] text-muted-foreground">24/7 Support</span>
+              </div>
+            </div>
 
-              <div className="space-y-1.5">
-                {faqItems.map((item, index) => {
-                  const Icon = item.icon
-                  const isExpanded = expandedIndex === index
-
-                  return (
-                    <div key={index} className="overflow-hidden rounded-md border border-border/30 bg-card/30 transition-colors hover:border-border/50">
-                      <button
-                        onClick={() => setExpandedIndex(isExpanded ? null : index)}
-                        className="flex w-full items-center gap-2 p-2 text-left"
-                      >
-                        <div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md ${isExpanded ? "bg-primary/20" : "bg-primary/10"}`}>
-                          <Icon className="h-3 w-3 text-primary" />
-                        </div>
-                        <span className="flex-1 text-xs font-medium text-foreground">{item.question}</span>
-                        <ChevronDown className={`h-3 w-3 text-muted-foreground transition-transform ${isExpanded ? "rotate-180" : ""}`} />
-                      </button>
-
-                      {isExpanded && (
-                        <div className="border-t border-border/20 px-2 pb-2 pt-1.5">
-                          <p className="pl-8 text-[11px] leading-relaxed text-muted-foreground">
-                            {item.answer}
-                          </p>
-                        </div>
-                      )}
+            {/* Main Content Grid */}
+            <div className="flex flex-1 gap-4 overflow-hidden">
+              {/* FAQ Column */}
+              <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-border/30 bg-[#0a0a0f]">
+                {/* FAQ Header */}
+                <div className="flex shrink-0 items-center justify-between border-b border-border/30 bg-[#111118] px-3 py-2">
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1">
+                      <div className="h-2 w-2 rounded-full bg-[#ff5f57]" />
+                      <div className="h-2 w-2 rounded-full bg-[#febc2e]" />
+                      <div className="h-2 w-2 rounded-full bg-[#28c840]" />
                     </div>
-                  )
-                })}
-              </div>
-            </div>
+                    <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">FAQ</span>
+                  </div>
+                  <span className="text-[9px] text-muted-foreground/40">{faqItems.length} topics</span>
+                </div>
 
-            {/* Support Card */}
-            <div className="glass-panel shrink-0 p-3">
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                  <MessageCircle className="h-4 w-4 text-primary" />
+                {/* FAQ Items */}
+                <div className="flex-1 space-y-1 overflow-y-auto p-2">
+                  {faqItems.map((item, index) => {
+                    const Icon = item.icon
+                    const isExpanded = expandedIndex === index
+
+                    return (
+                      <div key={index} className="overflow-hidden rounded-lg border border-border/20 bg-card/40 transition-all hover:border-border/40 hover:bg-card/60">
+                        <button
+                          onClick={() => setExpandedIndex(isExpanded ? null : index)}
+                          className="flex w-full items-center gap-3 p-2.5 text-left"
+                        >
+                          <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-colors ${isExpanded ? "bg-primary/30" : "bg-primary/10"}`}>
+                            <Icon className="h-3.5 w-3.5 text-primary" />
+                          </div>
+                          <span className="flex-1 text-xs font-medium text-foreground">{item.question}</span>
+                          <ChevronDown className={`h-4 w-4 text-muted-foreground/60 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} />
+                        </button>
+
+                        {isExpanded && (
+                          <div className="border-t border-border/20 bg-card/20 px-3 py-2.5">
+                            <p className="pl-10 text-[11px] leading-relaxed text-muted-foreground/80">
+                              {item.answer}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-sm font-bold text-foreground">Need more help?</h3>
-                  <p className="text-[10px] text-muted-foreground">
-                    Our support team is available 24/7 on Telegram.
-                  </p>
+              </div>
+
+              {/* Right Side Panel */}
+              <div className="flex w-[200px] shrink-0 flex-col gap-3">
+                {/* Quick Links */}
+                <div className="rounded-lg border border-border/30 bg-[#0a0a0f] p-3">
+                  <h3 className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">Quick Links</h3>
+                  <div className="space-y-1.5">
+                    <Link href="/" className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[11px] text-muted-foreground transition-colors hover:bg-card/50 hover:text-foreground">
+                      <Zap className="h-3 w-3 text-primary" />
+                      Getting Started
+                    </Link>
+                    <Link href="/proxy" className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[11px] text-muted-foreground transition-colors hover:bg-card/50 hover:text-foreground">
+                      <Shield className="h-3 w-3 text-cyan-400" />
+                      Proxy Setup
+                    </Link>
+                    <Link href="/sessions" className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[11px] text-muted-foreground transition-colors hover:bg-card/50 hover:text-foreground">
+                      <BookOpen className="h-3 w-3 text-amber-400" />
+                      Session Guide
+                    </Link>
+                    <Link href="/profile" className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[11px] text-muted-foreground transition-colors hover:bg-card/50 hover:text-foreground">
+                      <HelpCircle className="h-3 w-3 text-emerald-400" />
+                      Billing & Payments
+                    </Link>
+                  </div>
                 </div>
-                <a
-                  href="https://t.me/support"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 rounded-lg bg-[#229ED9] px-3 py-1.5 text-xs font-semibold text-white transition-all hover:bg-[#1a8ac4]"
-                >
-                  <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-                  </svg>
-                  Telegram
-                  <ExternalLink className="h-3 w-3 opacity-60" />
-                </a>
+
+                {/* Support Card */}
+                <div className="flex flex-1 flex-col justify-between rounded-lg border border-border/30 bg-gradient-to-b from-[#0a0a0f] to-[#0d1117] p-3">
+                  <div>
+                    <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-[#229ED9]/20">
+                      <MessageCircle className="h-4 w-4 text-[#229ED9]" />
+                    </div>
+                    <h3 className="text-sm font-bold text-foreground">Need Help?</h3>
+                    <p className="mt-1 text-[10px] leading-relaxed text-muted-foreground/70">
+                      Our support team is available around the clock to assist you.
+                    </p>
+                  </div>
+                  <a
+                    href="https://t.me/support"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 flex items-center justify-center gap-2 rounded-lg bg-[#229ED9] px-3 py-2 text-xs font-semibold text-white transition-all hover:bg-[#1a8ac4]"
+                  >
+                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                    </svg>
+                    Contact Support
+                    <ExternalLink className="h-3 w-3 opacity-60" />
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
-        </main>
+          </main>
 
           {/* Right AD panel - Full height */}
           <aside className="hidden w-[100px] shrink-0 lg:flex">
