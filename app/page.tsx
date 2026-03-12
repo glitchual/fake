@@ -1,19 +1,18 @@
 "use client"
 
-import { useState } from "react"
 import { Search } from "lucide-react"
-import { Logo365 } from "@/components/logo-365"
 import Image from "next/image"
+import Link from "next/link"
 import { motion } from "framer-motion"
 
 // Navigation items
 const navItems = [
-  { label: "SPAMMER", active: true },
-  { label: "PROXY", active: false },
-  { label: "SESSIONS", active: false },
-  { label: "HELP", active: false },
-  { label: "PROFILE", active: false },
-  { label: "GAMBLE", active: false, accent: true },
+  { label: "SPAMMER", href: "/", active: true },
+  { label: "PROXY", href: "/proxy", active: false },
+  { label: "SESSIONS", href: "/sessions", active: false },
+  { label: "HELP", href: "/help", active: false },
+  { label: "PROFILE", href: "/profile", active: false },
+  { label: "GAMBLE", href: "/gamble", active: false, accent: true },
 ]
 
 // Animation variants
@@ -30,7 +29,6 @@ const scaleIn = {
 }
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState("SPAMMER")
 
   return (
     <div className="desktop-app relative min-h-screen overflow-hidden bg-background">
@@ -68,7 +66,7 @@ export default function Home() {
         <TopBar />
 
         {/* Navigation */}
-        <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
+        <Navigation />
 
         {/* Main Layout - Ads + Content + Ads */}
         <div className="flex flex-1 items-start justify-center gap-6 px-6 pb-20 pt-2">
@@ -97,8 +95,6 @@ export default function Home() {
           </motion.div>
         </div>
 
-        {/* Footer */}
-        <Footer />
       </div>
     </div>
   )
@@ -134,13 +130,7 @@ function SearchBar() {
   )
 }
 
-function Navigation({ 
-  activeTab, 
-  setActiveTab 
-}: { 
-  activeTab: string
-  setActiveTab: (tab: string) => void 
-}) {
+function Navigation() {
   return (
     <motion.nav 
       className="flex justify-center gap-6 px-6 py-5 md:gap-8"
@@ -149,30 +139,32 @@ function Navigation({
       transition={{ duration: 0.4, delay: 0.1 }}
     >
       {navItems.map((item, index) => (
-        <motion.button
+        <motion.div
           key={item.label}
-          onClick={() => setActiveTab(item.label)}
-          className={`relative text-sm font-bold tracking-wider transition-all duration-200 md:text-base ${
-            activeTab === item.label
-              ? "text-foreground"
-              : item.accent
-                ? "text-primary hover:text-primary/80"
-                : "text-muted-foreground hover:text-foreground/80"
-          }`}
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.05 * index }}
-          whileHover={{ y: -1 }}
         >
-          {item.label}
-          {activeTab === item.label && (
-            <motion.div
-              className="absolute -bottom-1 left-0 right-0 h-0.5 bg-foreground/30 rounded-full"
-              layoutId="activeTab"
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
-            />
-          )}
-        </motion.button>
+          <Link
+            href={item.href}
+            className={`relative text-sm font-bold tracking-wider transition-all duration-200 md:text-base ${
+              item.active
+                ? "text-foreground"
+                : item.accent
+                  ? "text-primary hover:text-primary/80"
+                  : "text-muted-foreground hover:text-foreground/80"
+            }`}
+          >
+            {item.label}
+            {item.active && (
+              <motion.div
+                className="absolute -bottom-1 left-0 right-0 h-0.5 bg-foreground/30 rounded-full"
+                layoutId="activeTab"
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              />
+            )}
+          </Link>
+        </motion.div>
       ))}
     </motion.nav>
   )
@@ -223,40 +215,4 @@ function AdPanel({ tall = false }: { tall?: boolean }) {
   )
 }
 
-function Footer() {
-  return (
-    <footer className="relative z-10 border-t border-border/20 bg-card/60 backdrop-blur-md">
-      <div className="mx-auto flex h-[70px] max-w-6xl items-center justify-between px-6">
-        {/* 365 Logo and text */}
-        <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center">
-            <Logo365 className="h-8 w-8" />
-          </div>
-          <p className="max-w-[220px] text-[10px] leading-tight text-muted-foreground/70">
-            365spammer founders and employees are not responsible for how users use the software.
-          </p>
-        </div>
 
-        {/* Divider */}
-        <div className="hidden h-8 w-px bg-border/30 sm:block" />
-
-        {/* Comrade Logo and text */}
-        <div className="flex items-center gap-3">
-          <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-md">
-            <Image
-              src="/images/comrade-logo.png"
-              alt="Comrade M.V."
-              fill
-              loading="eager"
-              priority
-              className="object-cover"
-            />
-          </div>
-          <p className="max-w-[260px] text-[10px] leading-tight text-muted-foreground/70">
-            comrade, under the branding of comrade M.V. is not responsible for the use of this application. Everyone is responsible for their own actions.
-          </p>
-        </div>
-      </div>
-    </footer>
-  )
-}

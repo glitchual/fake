@@ -227,3 +227,33 @@
     transparent 70%
   );
 }
+
+/* FAQ Item hover effect */
+.faq-item {
+  transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+  border-color: rgba(200, 255, 46, 0.1);
+}
+
+/* Support card */
+.support-card {
+  transition: all 0.3s ease;
+}
+
+.support-card:hover {
+  box-shadow: 
+    0 0 0 1px rgba(200, 255, 46, 0.1),
+    0 8px 40px rgba(0, 0, 0, 0.3),
+    0 0 60px rgba(200, 255, 46, 0.03);
+}
+
+/* Telegram button */
+.telegram-btn {
+  box-shadow: 0 4px 15px rgba(34, 158, 217, 0.3);
+}
+
+.telegram-btn:hover {
+  box-shadow: 0 6px 25px rgba(34, 158, 217, 0.4);
+}
