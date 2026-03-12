@@ -2,63 +2,139 @@
 
 import { useState, useRef } from "react"
 import { AppLayout } from "@/components/app-layout"
-import { Gift, Sparkles, Trophy, Zap, Star, Gem, Crown, Coins } from "lucide-react"
+import { Gift, Sparkles, Trophy, Zap, Star, Gem, Crown, Coins, Calendar, Target, Box, RotateCw } from "lucide-react"
 
-// Wheel segments with prizes
+// Prize pool with exact win rates (must sum to 100%)
+const prizePool = [
+  // Balance prizes (50.8%)
+  { type: "balance", label: "$0.20", value: 0.20, chance: 25, color: "#374151" },
+  { type: "balance", label: "$0.50", value: 0.50, chance: 18, color: "#4B5563" },
+  { type: "balance", label: "$1.00", value: 1.00, chance: 7, color: "#6B7280" },
+  { type: "balance", label: "$10", value: 10, chance: 0.5, color: "#CA8A04" },
+  { type: "balance", label: "$25", value: 25, chance: 0.2, color: "#22C55E" },
+  { type: "balance", label: "$50", value: 50, chance: 0.1, color: "#EF4444" },
+  // Subscription Days (17%)
+  { type: "subscription", label: "+1 Day", value: 1, chance: 10, color: "#3B82F6" },
+  { type: "subscription", label: "+3 Days", value: 3, chance: 5, color: "#6366F1" },
+  { type: "subscription", label: "+7 Days", value: 7, chance: 2, color: "#8B5CF6" },
+  // Campaign (8.5%)
+  { type: "campaign", label: "+1 Campaign", value: 1, chance: 5, color: "#14B8A6" },
+  { type: "campaign", label: "+3 Campaigns", value: 3, chance: 2.5, color: "#10B981" },
+  { type: "campaign", label: "+5 Campaigns", value: 5, chance: 1, color: "#059669" },
+  // Rare Bonus (2.5%)
+  { type: "lootbox", label: "Lootbox $5", value: 5, chance: 1, color: "#F59E0B" },
+  { type: "lootbox", label: "Lootbox $15", value: 15, chance: 0.3, color: "#D97706" },
+  { type: "spin", label: "Spin x5", value: 5, chance: 1, color: "#EC4899" },
+  { type: "spin", label: "Spin x10", value: 10, chance: 0.2, color: "#DB2777" },
+  // Nothing (21.2% - remaining to make 100%)
+  { type: "nothing", label: "Try Again", value: 0, chance: 21.2, color: "#1F2937" },
+]
+
+// Create wheel segments from prize pool (12 visible segments)
 const wheelSegments = [
-  { label: "$0.50", color: "#374151", multiplier: 0.5 },
-  { label: "$1", color: "#4B5563", multiplier: 1 },
-  { label: "$2", color: "#374151", multiplier: 2 },
-  { label: "$5", color: "#4B5563", multiplier: 5 },
-  { label: "$0.25", color: "#374151", multiplier: 0.25 },
-  { label: "$10", color: "#CA8A04", multiplier: 10 },
-  { label: "$0.10", color: "#4B5563", multiplier: 0.1 },
-  { label: "$20", color: "#374151", multiplier: 20 },
-  { label: "$0.50", color: "#4B5563", multiplier: 0.5 },
-  { label: "$50", color: "#22C55E", multiplier: 50 },
-  { label: "$1", color: "#374151", multiplier: 1 },
-  { label: "$100", color: "#EF4444", multiplier: 100 },
+  { label: "$0.20", color: "#374151", type: "balance" },
+  { label: "+1 Day", color: "#3B82F6", type: "subscription" },
+  { label: "$0.50", color: "#4B5563", type: "balance" },
+  { label: "+1 Campaign", color: "#14B8A6", type: "campaign" },
+  { label: "$1.00", color: "#6B7280", type: "balance" },
+  { label: "Try Again", color: "#1F2937", type: "nothing" },
+  { label: "$10", color: "#CA8A04", type: "balance" },
+  { label: "+3 Days", color: "#6366F1", type: "subscription" },
+  { label: "$25", color: "#22C55E", type: "balance" },
+  { label: "Spin x5", color: "#EC4899", type: "spin" },
+  { label: "$50", color: "#EF4444", type: "balance" },
+  { label: "Lootbox $5", color: "#F59E0B", type: "lootbox" },
 ]
 
-// Loot boxes configuration
+// Loot boxes with specific contents
 const lootBoxes = [
-  { id: 1, price: 1, name: "Starter Box", icon: Gift, color: "from-gray-600 to-gray-700", possibleWins: "$0.10 - $5" },
-  { id: 2, price: 5, name: "Bronze Box", icon: Zap, color: "from-amber-700 to-amber-800", possibleWins: "$0.50 - $25" },
-  { id: 3, price: 10, name: "Silver Box", icon: Star, color: "from-slate-400 to-slate-600", possibleWins: "$1 - $50" },
-  { id: 4, price: 15, name: "Gold Box", icon: Crown, color: "from-yellow-500 to-yellow-700", possibleWins: "$2 - $100" },
-  { id: 5, price: 25, name: "Diamond Box", icon: Gem, color: "from-cyan-400 to-cyan-600", possibleWins: "$5 - $250" },
-  { id: 6, price: 50, name: "Legendary Box", icon: Trophy, color: "from-purple-500 to-purple-700", possibleWins: "$10 - $500" },
+  { id: 1, price: 1, name: "Starter Box", icon: Gift, color: "from-zinc-600 to-zinc-700", rarity: "Common" },
+  { id: 2, price: 5, name: "Bronze Box", icon: Zap, color: "from-amber-700 to-amber-800", rarity: "Uncommon" },
+  { id: 3, price: 10, name: "Silver Box", icon: Star, color: "from-slate-400 to-slate-600", rarity: "Rare" },
+  { id: 4, price: 15, name: "Gold Box", icon: Crown, color: "from-yellow-500 to-yellow-700", rarity: "Epic" },
+  { id: 5, price: 25, name: "Diamond Box", icon: Gem, color: "from-cyan-400 to-cyan-600", rarity: "Legendary" },
+  { id: 6, price: 50, name: "Legendary Box", icon: Trophy, color: "from-purple-500 to-purple-700", rarity: "Mythic" },
 ]
+
+// Function to get random prize based on chances
+function getRandomPrize() {
+  const random = Math.random() * 100
+  let cumulative = 0
+  for (const prize of prizePool) {
+    cumulative += prize.chance
+    if (random <= cumulative) {
+      return prize
+    }
+  }
+  return prizePool[prizePool.length - 1] // fallback
+}
 
 export default function GamblePage() {
   const [balance, setBalance] = useState(125.50)
+  const [subscriptionDays, setSubscriptionDays] = useState(47)
+  const [campaigns, setCampaigns] = useState(3)
+  const [freeSpins, setFreeSpins] = useState(0)
   const [isSpinning, setIsSpinning] = useState(false)
   const [wheelRotation, setWheelRotation] = useState(0)
   const [spinCost] = useState(2)
-  const [lastWin, setLastWin] = useState<string | null>(null)
+  const [lastWin, setLastWin] = useState<{ label: string; type: string } | null>(null)
   const [openingBox, setOpeningBox] = useState<number | null>(null)
-  const [boxResult, setBoxResult] = useState<{ boxId: number; win: number } | null>(null)
+  const [boxResult, setBoxResult] = useState<{ boxId: number; prize: typeof prizePool[0] } | null>(null)
   const wheelRef = useRef<HTMLDivElement>(null)
 
   const spinWheel = () => {
-    if (isSpinning || balance < spinCost) return
+    if (isSpinning) return
     
-    setBalance(prev => prev - spinCost)
+    // Check if user has free spins or enough balance
+    if (freeSpins > 0) {
+      setFreeSpins(prev => prev - 1)
+    } else if (balance >= spinCost) {
+      setBalance(prev => prev - spinCost)
+    } else {
+      return
+    }
+    
     setIsSpinning(true)
     setLastWin(null)
 
-    // Random rotation (5-10 full spins + random segment)
+    // Get random prize based on chances
+    const prize = getRandomPrize()
+    
+    // Find matching segment index for visual
+    const segmentIndex = wheelSegments.findIndex(s => s.label === prize.label) !== -1 
+      ? wheelSegments.findIndex(s => s.label === prize.label)
+      : Math.floor(Math.random() * wheelSegments.length)
+
+    // Random rotation (5-10 full spins + land on segment)
     const spins = 5 + Math.random() * 5
     const segmentAngle = 360 / wheelSegments.length
-    const randomSegment = Math.floor(Math.random() * wheelSegments.length)
-    const newRotation = wheelRotation + (spins * 360) + (randomSegment * segmentAngle) + (segmentAngle / 2)
+    const newRotation = wheelRotation + (spins * 360) + (segmentIndex * segmentAngle) + (segmentAngle / 2)
     
     setWheelRotation(newRotation)
 
     setTimeout(() => {
-      const winningSegment = wheelSegments[randomSegment]
-      setLastWin(winningSegment.label)
-      setBalance(prev => prev + (winningSegment.multiplier))
+      setLastWin({ label: prize.label, type: prize.type })
+      
+      // Apply prize
+      switch (prize.type) {
+        case "balance":
+          setBalance(prev => prev + prize.value)
+          break
+        case "subscription":
+          setSubscriptionDays(prev => prev + prize.value)
+          break
+        case "campaign":
+          setCampaigns(prev => prev + prize.value)
+          break
+        case "spin":
+          setFreeSpins(prev => prev + prize.value)
+          break
+        case "lootbox":
+          // Could trigger auto-open of lootbox
+          setBalance(prev => prev + prize.value) // Give equivalent value for now
+          break
+      }
+      
       setIsSpinning(false)
     }, 4000)
   }
@@ -72,14 +148,36 @@ export default function GamblePage() {
 
     // Simulate opening animation
     setTimeout(() => {
-      // Random win based on box price (0.1x to 10x)
-      const minMultiplier = 0.1
-      const maxMultiplier = 10
-      const randomMultiplier = minMultiplier + (Math.random() * (maxMultiplier - minMultiplier))
-      const win = Math.round(box.price * randomMultiplier * 100) / 100
+      // Get random prize based on box tier (higher tier = better multiplier on chances)
+      const tierMultiplier = box.price / 5 // 1, 1, 2, 3, 5, 10
+      const prize = getRandomPrize()
       
-      setBoxResult({ boxId: box.id, win })
-      setBalance(prev => prev + win)
+      // Boost the value slightly based on tier
+      const boostedPrize = { 
+        ...prize, 
+        value: prize.type === "balance" ? prize.value * (1 + tierMultiplier * 0.5) : prize.value 
+      }
+      
+      setBoxResult({ boxId: box.id, prize: boostedPrize })
+      
+      // Apply prize
+      switch (boostedPrize.type) {
+        case "balance":
+          setBalance(prev => prev + boostedPrize.value)
+          break
+        case "subscription":
+          setSubscriptionDays(prev => prev + boostedPrize.value)
+          break
+        case "campaign":
+          setCampaigns(prev => prev + boostedPrize.value)
+          break
+        case "spin":
+          setFreeSpins(prev => prev + boostedPrize.value)
+          break
+        case "lootbox":
+          setBalance(prev => prev + boostedPrize.value)
+          break
+      }
       
       setTimeout(() => {
         setOpeningBox(null)
@@ -87,17 +185,35 @@ export default function GamblePage() {
       }, 3000)
     }, 2000)
   }
+  
+  const canSpin = freeSpins > 0 || balance >= spinCost
 
   return (
     <AppLayout activeNav="GAMBLE">
       <div className="flex h-full w-full flex-col overflow-y-auto">
         <div className="glass-panel panel-glow flex flex-1 flex-col p-6">
-          {/* Header with Balance */}
-          <div className="mb-6 flex items-center justify-between">
-            <h1 className="text-2xl font-bold tracking-[0.2em] text-foreground">GAMBLE</h1>
-            <div className="flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2">
-              <Coins className="h-5 w-5 text-primary" />
-              <span className="font-bold text-primary">${balance.toFixed(2)}</span>
+          {/* Header with Stats */}
+          <div className="mb-4 flex items-center justify-between">
+            <h1 className="text-xl font-bold tracking-[0.2em] text-foreground">GAMBLE</h1>
+            <div className="flex items-center gap-3">
+              {freeSpins > 0 && (
+                <div className="flex items-center gap-1.5 rounded-full border border-pink-500/30 bg-pink-500/10 px-3 py-1.5">
+                  <RotateCw className="h-4 w-4 text-pink-400" />
+                  <span className="text-sm font-bold text-pink-400">{freeSpins} Free</span>
+                </div>
+              )}
+              <div className="flex items-center gap-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1.5">
+                <Calendar className="h-4 w-4 text-blue-400" />
+                <span className="text-sm font-bold text-blue-400">{subscriptionDays}d</span>
+              </div>
+              <div className="flex items-center gap-1.5 rounded-full border border-teal-500/30 bg-teal-500/10 px-3 py-1.5">
+                <Target className="h-4 w-4 text-teal-400" />
+                <span className="text-sm font-bold text-teal-400">{campaigns}</span>
+              </div>
+              <div className="flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5">
+                <Coins className="h-4 w-4 text-primary" />
+                <span className="text-sm font-bold text-primary">${balance.toFixed(2)}</span>
+              </div>
             </div>
           </div>
 
@@ -175,24 +291,36 @@ export default function GamblePage() {
               </div>
 
               {/* Spin Button & Result */}
-              <div className="mt-6 flex flex-col items-center gap-3">
+              <div className="mt-4 flex flex-col items-center gap-2">
                 {lastWin && (
-                  <div className="flex items-center gap-2 text-lg font-bold text-primary animate-pulse">
-                    <Sparkles className="h-5 w-5" />
-                    You won {lastWin}!
+                  <div className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-bold animate-pulse ${
+                    lastWin.type === "nothing" 
+                      ? "bg-zinc-800 text-zinc-400" 
+                      : lastWin.type === "balance" 
+                        ? "bg-primary/20 text-primary"
+                        : lastWin.type === "subscription"
+                          ? "bg-blue-500/20 text-blue-400"
+                          : lastWin.type === "campaign"
+                            ? "bg-teal-500/20 text-teal-400"
+                            : lastWin.type === "spin"
+                              ? "bg-pink-500/20 text-pink-400"
+                              : "bg-amber-500/20 text-amber-400"
+                  }`}>
+                    <Sparkles className="h-4 w-4" />
+                    {lastWin.type === "nothing" ? "Try Again!" : `Won: ${lastWin.label}`}
                   </div>
                 )}
                 <button
                   onClick={spinWheel}
-                  disabled={isSpinning || balance < spinCost}
-                  className="flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary/80 px-8 py-3 text-sm font-bold uppercase tracking-wider text-primary-foreground transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(163,230,53,0.3)] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+                  disabled={isSpinning || !canSpin}
+                  className="flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary/80 px-6 py-2.5 text-sm font-bold uppercase tracking-wider text-primary-foreground transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(163,230,53,0.3)] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
                 >
                   {isSpinning ? (
                     "Spinning..."
+                  ) : freeSpins > 0 ? (
+                    "FREE SPIN"
                   ) : (
-                    <>
-                      SPIN - ${spinCost}
-                    </>
+                    <>SPIN - ${spinCost}</>
                   )}
                 </button>
               </div>
