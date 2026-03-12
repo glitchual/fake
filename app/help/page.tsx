@@ -56,7 +56,7 @@ export default function HelpPage() {
       </div>
 
       {/* Header - Compact */}
-      <header className="relative z-10 flex items-center justify-center gap-8 px-6 py-4">
+      <header className="relative z-10 flex items-center justify-center gap-8 px-6 py-2.5">
         <nav className="flex items-center gap-8">
           {navItems.map((item) => (
             <Link
@@ -91,15 +91,15 @@ export default function HelpPage() {
       </header>
 
       {/* Content Area - with proper margins and spacing */}
-      <div className="relative z-10 flex flex-1 justify-center overflow-hidden px-8 py-6 lg:px-12">
-        <div className="flex w-full max-w-[1400px] gap-4">
+      <div className="relative z-10 flex flex-1 justify-center overflow-hidden px-6 py-3 lg:px-10">
+        <div className="flex h-full max-h-[580px] w-full max-w-[1200px] gap-3">
           {/* Left AD panels - Top 40%, Bottom 60% */}
-          <aside className="hidden w-[130px] shrink-0 flex-col gap-3 lg:flex">
+          <aside className="hidden w-[100px] shrink-0 flex-col gap-2 lg:flex">
             <div className="glass-panel flex h-[40%] items-center justify-center">
-              <span className="text-xs font-semibold tracking-wider text-muted-foreground/30">AD</span>
+              <span className="text-[10px] font-semibold tracking-wider text-muted-foreground/30">AD</span>
             </div>
             <div className="glass-panel flex h-[60%] items-center justify-center">
-              <span className="text-xs font-semibold tracking-wider text-muted-foreground/30">AD</span>
+              <span className="text-[10px] font-semibold tracking-wider text-muted-foreground/30">AD</span>
             </div>
           </aside>
 
@@ -173,9 +173,9 @@ export default function HelpPage() {
         </main>
 
           {/* Right AD panel - Full height */}
-          <aside className="hidden w-[130px] shrink-0 lg:flex">
+          <aside className="hidden w-[100px] shrink-0 lg:flex">
             <div className="glass-panel flex h-full w-full items-center justify-center">
-              <span className="text-xs font-semibold tracking-wider text-muted-foreground/30">AD</span>
+              <span className="text-[10px] font-semibold tracking-wider text-muted-foreground/30">AD</span>
             </div>
           </aside>
         </div>
