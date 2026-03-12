@@ -62,29 +62,31 @@ export function AppLayout({ children, activeNav }: AppLayoutProps) {
         </div>
       </header>
 
-      {/* Content Area - fills remaining space */}
-      <div className="relative z-10 flex flex-1 gap-[3px] px-3 pb-3">
-        {/* Left AD panels - Top 40%, Bottom 60% */}
-        <aside className="hidden w-[140px] shrink-0 flex-col gap-[3px] lg:flex">
-          <div className="glass-panel flex h-[40%] items-center justify-center">
-            <span className="text-xs font-semibold tracking-wider text-muted-foreground/30">AD</span>
-          </div>
-          <div className="glass-panel flex h-[60%] items-center justify-center">
-            <span className="text-xs font-semibold tracking-wider text-muted-foreground/30">AD</span>
-          </div>
-        </aside>
+      {/* Content Area - with proper margins and spacing */}
+      <div className="relative z-10 flex flex-1 justify-center px-8 py-6 lg:px-12">
+        <div className="flex w-full max-w-[1400px] gap-4">
+          {/* Left AD panels - Top 40%, Bottom 60% */}
+          <aside className="hidden w-[130px] shrink-0 flex-col gap-3 lg:flex">
+            <div className="glass-panel flex h-[40%] items-center justify-center">
+              <span className="text-xs font-semibold tracking-wider text-muted-foreground/30">AD</span>
+            </div>
+            <div className="glass-panel flex h-[60%] items-center justify-center">
+              <span className="text-xs font-semibold tracking-wider text-muted-foreground/30">AD</span>
+            </div>
+          </aside>
 
-        {/* Center content */}
-        <main className="flex flex-1">
-          {children}
-        </main>
+          {/* Center content */}
+          <main className="flex flex-1">
+            {children}
+          </main>
 
-        {/* Right AD panel - Full height */}
-        <aside className="hidden w-[140px] shrink-0 lg:flex">
-          <div className="glass-panel flex h-full w-full items-center justify-center">
-            <span className="text-xs font-semibold tracking-wider text-muted-foreground/30">AD</span>
-          </div>
-        </aside>
+          {/* Right AD panel - Full height */}
+          <aside className="hidden w-[130px] shrink-0 lg:flex">
+            <div className="glass-panel flex h-full w-full items-center justify-center">
+              <span className="text-xs font-semibold tracking-wider text-muted-foreground/30">AD</span>
+            </div>
+          </aside>
+        </div>
       </div>
     </div>
   )
