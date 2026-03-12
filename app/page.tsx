@@ -52,8 +52,8 @@ export default function Home() {
 
   return (
     <AppLayout activeNav="SPAMMER">
-      <div className="flex h-full w-full max-w-3xl flex-col">
-        <div className="glass-panel panel-glow flex flex-1 flex-col p-6">
+      <div className="flex h-full w-full max-w-4xl flex-col">
+        <div className="glass-panel panel-glow flex flex-1 flex-col p-8 min-h-[500px]">
           <h2 className="text-center text-2xl font-bold tracking-[0.25em] text-foreground">
             WORKFLOW
           </h2>
