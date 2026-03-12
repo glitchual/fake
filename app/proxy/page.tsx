@@ -21,6 +21,10 @@ export default function ProxyPage() {
     open: false,
     proxyId: null
   })
+  const [editModal, setEditModal] = useState<{ open: boolean; proxy: typeof initialProxies[0] | null }>({
+    open: false,
+    proxy: null
+  })
 
   const addProxy = () => {
     if (newProxy.trim()) {
@@ -31,8 +35,15 @@ export default function ProxyPage() {
   }
 
   const startEdit = (proxy: typeof proxies[0]) => {
-    setEditingId(proxy.id)
-    setEditValue(proxy.address)
+    setEditModal({ open: true, proxy })
+  }
+
+  const confirmEdit = () => {
+    if (editModal.proxy) {
+      setEditingId(editModal.proxy.id)
+      setEditValue(editModal.proxy.address)
+    }
+    setEditModal({ open: false, proxy: null })
   }
 
   const saveEdit = () => {
@@ -59,7 +70,7 @@ export default function ProxyPage() {
 
   return (
     <AppLayout activeNav="PROXY">
-      <div className="flex h-full w-full max-w-3xl flex-col">
+      <div className="flex h-full w-full flex-col">
         <div className="glass-panel panel-glow flex flex-1 flex-col p-6">
           <h2 className="text-center text-2xl font-bold tracking-[0.25em] text-foreground">
             WORKFLOW
@@ -157,6 +168,16 @@ export default function ProxyPage() {
         message="Are you sure you want to delete this proxy?"
         confirmText="Delete"
         variant="destructive"
+      />
+
+      <ConfirmModal
+        isOpen={editModal.open}
+        onClose={() => setEditModal({ open: false, proxy: null })}
+        onConfirm={confirmEdit}
+        title="Edit Proxy"
+        message={`Are you sure you want to edit proxy "${editModal.proxy?.address}"?`}
+        confirmText="Edit"
+        variant="default"
       />
     </AppLayout>
   )

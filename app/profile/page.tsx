@@ -27,7 +27,7 @@ export default function ProfilePage() {
 
   return (
     <AppLayout activeNav="PROFILE">
-      <div className="flex h-full w-full max-w-3xl flex-col">
+      <div className="flex h-full w-full flex-col">
         <div className="glass-panel panel-glow flex flex-1 flex-col p-6">
           {/* Profile Header */}
           <div className="flex flex-col items-center gap-4 md:flex-row md:items-start md:gap-6">
@@ -62,10 +62,10 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          {/* Stats Grid */}
-          <div className="mt-6 grid flex-1 gap-3 md:grid-cols-3">
+          {/* Stats Grid - Compact */}
+          <div className="mt-6 grid gap-3 md:grid-cols-3">
             {/* Subscription */}
-            <div className="flex flex-col rounded-xl border border-border/50 bg-card/50 p-4">
+            <div className="rounded-xl border border-border/50 bg-card/50 p-4">
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Clock className="h-4 w-4" />
                 <span className="text-[10px] uppercase tracking-wider">Subscription</span>
@@ -74,7 +74,7 @@ export default function ProfilePage() {
                 {userData.subscriptionDays}
                 <span className="ml-1 text-sm font-normal text-muted-foreground">days</span>
               </p>
-              <div className="mt-auto pt-3">
+              <div className="mt-3">
                 <div className="h-1.5 w-full overflow-hidden rounded-full bg-border/50">
                   <div
                     className="h-full rounded-full bg-gradient-to-r from-primary to-primary/60"
@@ -85,19 +85,19 @@ export default function ProfilePage() {
             </div>
 
             {/* Balance */}
-            <div className="flex flex-col rounded-xl border border-border/50 bg-card/50 p-4">
+            <div className="rounded-xl border border-border/50 bg-card/50 p-4">
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Wallet className="h-4 w-4" />
                 <span className="text-[10px] uppercase tracking-wider">Balance</span>
               </div>
               <p className="mt-2 text-2xl font-bold text-foreground">${userData.balance}</p>
-              <p className="mt-auto pt-2 text-[10px] text-muted-foreground">
+              <p className="mt-2 text-[10px] text-muted-foreground">
                 Total deposited: ${userData.totalDeposited}
               </p>
             </div>
 
             {/* Activity */}
-            <div className="flex flex-col rounded-xl border border-border/50 bg-card/50 p-4">
+            <div className="rounded-xl border border-border/50 bg-card/50 p-4">
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Zap className="h-4 w-4" />
                 <span className="text-[10px] uppercase tracking-wider">Activity</span>

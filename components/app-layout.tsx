@@ -68,9 +68,9 @@ export function AppLayout({ children, activeNav }: AppLayoutProps) {
       </header>
 
       {/* Content Area - fills remaining space */}
-      <div className="relative z-10 flex flex-1 gap-1 px-1 pb-1">
+      <div className="relative z-10 flex flex-1 gap-0 px-1 pb-1">
         {/* Left AD panels */}
-        <aside className="hidden w-[160px] shrink-0 flex-col gap-1 lg:flex">
+        <aside className="hidden w-[160px] shrink-0 flex-col gap-0 lg:flex">
           <div className="glass-panel flex flex-1 items-center justify-center">
             <span className="text-xs font-semibold tracking-wider text-muted-foreground/30">AD</span>
           </div>
