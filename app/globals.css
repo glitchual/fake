@@ -192,31 +192,33 @@
   border-color: rgba(200, 255, 46, 0.3);
 }
 
-/* Ambient background animation */
+/* Ambient background animation - GPU accelerated */
 @keyframes ambient-float {
   0%, 100% {
-    transform: translate(0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   50% {
-    transform: translate(-10px, 10px) scale(1.02);
+    transform: translate3d(-10px, 10px, 0);
   }
 }
 
 .ambient-float {
   animation: ambient-float 30s ease-in-out infinite;
+  will-change: transform;
 }
 
 @keyframes ambient-float-reverse {
   0%, 100% {
-    transform: translate(0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   50% {
-    transform: translate(10px, -10px) scale(1.02);
+    transform: translate3d(10px, -10px, 0);
   }
 }
 
 .ambient-float-reverse {
   animation: ambient-float-reverse 25s ease-in-out infinite;
+  will-change: transform;
 }
 
 /* Radial glow behind workflow */
@@ -226,4 +228,53 @@
     rgba(200, 255, 46, 0.03) 0%,
     transparent 70%
   );
+}
+
+/* FAQ Item hover effect */
+.faq-item {
+  transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+  border-color: rgba(200, 255, 46, 0.1);
+}
+
+/* Support card */
+.support-card {
+  transition: all 0.3s ease;
+}
+
+.support-card:hover {
+  box-shadow: 
+    0 0 0 1px rgba(200, 255, 46, 0.1),
+    0 8px 40px rgba(0, 0, 0, 0.3),
+    0 0 60px rgba(200, 255, 46, 0.03);
+}
+
+/* Telegram button */
+.telegram-btn {
+  box-shadow: 0 4px 15px rgba(34, 158, 217, 0.3);
+}
+
+.telegram-btn:hover {
+  box-shadow: 0 6px 25px rgba(34, 158, 217, 0.4);
+}
+
+/* Performance optimizations */
+.glass-panel,
+.panel-glow {
+  contain: layout style paint;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .ambient-float,
+  .ambient-float-reverse {
+    animation: none;
+  }
+  
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
