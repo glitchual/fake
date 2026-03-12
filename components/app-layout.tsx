@@ -1,7 +1,8 @@
 "use client"
 
-import { Search } from "lucide-react"
+import { Search, X } from "lucide-react"
 import Link from "next/link"
+import { useState, useRef, useEffect } from "react"
 
 const navItems = [
   { label: "SPAMMER", href: "/" },
@@ -18,46 +19,95 @@ interface AppLayoutProps {
 }
 
 export function AppLayout({ children, activeNav }: AppLayoutProps) {
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [searchValue, setSearchValue] = useState("")
+  const searchInputRef = useRef<HTMLInputElement>(null)
+  const searchContainerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (searchOpen && searchInputRef.current) {
+      searchInputRef.current.focus()
+    }
+  }, [searchOpen])
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+        if (searchValue === "") {
+          setSearchOpen(false)
+        }
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [searchValue])
+
+  const handleSearchToggle = () => {
+    if (!searchOpen) {
+      setSearchOpen(true)
+    }
+  }
+
+  const handleClearSearch = () => {
+    setSearchValue("")
+    setSearchOpen(false)
+  }
+
   return (
     <div className="relative flex h-screen flex-col overflow-hidden bg-background select-none">
-      {/* Background */}
+      {/* Background - slightly lighter ambient */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="ambient-float absolute left-[5%] top-[20%] h-[400px] w-[400px] rounded-full bg-[#3b5998]/20 blur-[100px]" />
-        <div className="ambient-float-reverse absolute right-[5%] top-[30%] h-[450px] w-[450px] rounded-full bg-[#26A17B]/20 blur-[100px]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/90" />
+        <div className="ambient-float absolute left-[5%] top-[20%] h-[400px] w-[400px] rounded-full bg-[#3b5998]/25 blur-[100px]" />
+        <div className="ambient-float-reverse absolute right-[5%] top-[30%] h-[450px] w-[450px] rounded-full bg-[#26A17B]/25 blur-[100px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background/80" />
       </div>
 
       {/* Header */}
-      <header className="relative z-10 flex items-center justify-center gap-10 px-6 py-3">
-        <nav className="flex items-center gap-10">
+      <header className="relative z-10 flex items-center justify-center px-6 py-4">
+        <nav className="flex items-center gap-2">
           {navItems.map((item) => (
             <Link
               key={item.label}
               href={item.href}
-              className={`relative py-1 text-sm font-bold tracking-wider transition-all duration-200 ${
+              className={`nav-link text-sm ${
                 activeNav === item.label
-                  ? "text-foreground"
+                  ? "active text-foreground"
                   : item.accent
-                    ? "text-primary hover:text-primary/80"
-                    : "text-muted-foreground hover:text-foreground/80"
+                    ? "nav-link-accent"
+                    : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {item.label}
-              {activeNav === item.label && (
-                <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full bg-primary/60" />
-              )}
             </Link>
           ))}
         </nav>
 
-        <div className="absolute right-6">
-          <div className="flex items-center gap-2 rounded-full border border-border/40 bg-card/50 px-4 py-2 transition-all duration-200 focus-within:border-primary/30 focus-within:bg-card/70">
-            <Search className="h-4 w-4 text-muted-foreground/70" />
+        {/* Collapsible Search - positioned to align with right AD panel */}
+        <div className="absolute right-6 lg:right-[calc(90px+2rem)]" ref={searchContainerRef}>
+          <div
+            onClick={handleSearchToggle}
+            className={`flex items-center gap-2 rounded-full border border-border/50 bg-card/60 backdrop-blur-sm transition-all duration-300 ${
+              searchOpen ? "search-expanded" : "search-collapsed"
+            } ${searchOpen ? "border-primary/30 shadow-[0_0_20px_rgba(200,255,46,0.1)]" : "hover:border-border hover:bg-card/80"}`}
+          >
+            <Search className={`h-4 w-4 shrink-0 transition-colors duration-200 ${searchOpen ? "text-primary" : "text-muted-foreground"}`} />
             <input
+              ref={searchInputRef}
               type="text"
-              placeholder="find something in settings.."
-              className="w-44 bg-transparent text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              placeholder="Search settings..."
+              className="search-input bg-transparent text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
             />
+            {searchOpen && (
+              <button
+                onClick={handleClearSearch}
+                className="shrink-0 rounded-full p-0.5 text-muted-foreground transition-colors hover:bg-border/50 hover:text-foreground"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -68,10 +118,10 @@ export function AppLayout({ children, activeNav }: AppLayoutProps) {
           {/* Left AD panels - Top 40%, Bottom 60% */}
           <aside className="hidden w-[90px] shrink-0 flex-col gap-3 lg:flex">
             <div className="glass-panel flex h-[40%] items-center justify-center">
-              <span className="text-xs font-semibold tracking-wider text-muted-foreground/25">AD</span>
+              <span className="text-xs font-semibold tracking-wider text-muted-foreground/30">AD</span>
             </div>
             <div className="glass-panel flex h-[60%] items-center justify-center">
-              <span className="text-xs font-semibold tracking-wider text-muted-foreground/25">AD</span>
+              <span className="text-xs font-semibold tracking-wider text-muted-foreground/30">AD</span>
             </div>
           </aside>
 
@@ -83,7 +133,7 @@ export function AppLayout({ children, activeNav }: AppLayoutProps) {
           {/* Right AD panel - Full height */}
           <aside className="hidden w-[90px] shrink-0 lg:flex">
             <div className="glass-panel flex h-full w-full items-center justify-center">
-              <span className="text-xs font-semibold tracking-wider text-muted-foreground/25">AD</span>
+              <span className="text-xs font-semibold tracking-wider text-muted-foreground/30">AD</span>
             </div>
           </aside>
         </div>
