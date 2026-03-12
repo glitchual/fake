@@ -266,6 +266,31 @@
   contain: layout style paint;
 }
 
+/* Premium Console Styling */
+.console-container {
+  box-shadow: 
+    0 4px 24px rgba(0, 0, 0, 0.5),
+    0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.console-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.console-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.console-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.console-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
   .ambient-float,

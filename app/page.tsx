@@ -52,7 +52,7 @@ export default function Home() {
 
   return (
     <AppLayout activeNav="SPAMMER">
-      <div className="flex h-full w-full max-w-3xl flex-col">
+      <div className="flex h-full w-full flex-col">
         <div className="glass-panel panel-glow flex flex-1 flex-col p-6">
           <h2 className="text-center text-2xl font-bold tracking-[0.25em] text-foreground">
             WORKFLOW
@@ -82,27 +82,65 @@ export default function Home() {
                 )}
               </button>
 
-              {/* Log Console */}
-              <div className="flex flex-1 flex-col rounded-lg border border-border/30 bg-background/50 p-4">
-                <p className="mb-2 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70">
-                  Log Console
-                </p>
-                <div className="flex-1 overflow-y-auto rounded bg-background/80 p-2.5 font-mono text-[11px]">
-                  {logs.map((log, index) => (
-                    <div
-                      key={index}
-                      className={`mb-0.5 ${
-                        log.includes("[WARN]")
-                          ? "text-yellow-500"
-                          : log.includes("[ERROR]")
-                            ? "text-destructive"
-                            : "text-muted-foreground/80"
-                      }`}
-                    >
-                      {log}
+              {/* Log Console - Premium Terminal Style */}
+              <div className="console-container flex flex-1 flex-col overflow-hidden rounded-xl border border-border/40 bg-[#0a0a0f]">
+                {/* Console Header */}
+                <div className="flex items-center justify-between border-b border-border/30 bg-[#111118] px-4 py-2.5">
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1.5">
+                      <div className="h-3 w-3 rounded-full bg-[#ff5f57]" />
+                      <div className="h-3 w-3 rounded-full bg-[#febc2e]" />
+                      <div className="h-3 w-3 rounded-full bg-[#28c840]" />
                     </div>
-                  ))}
+                    <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/60">
+                      Terminal
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-mono text-muted-foreground/40">
+                      {logs.length} entries
+                    </span>
+                  </div>
+                </div>
+                
+                {/* Console Body */}
+                <div className="flex-1 overflow-y-auto p-4 font-mono text-[12px] leading-relaxed">
+                  {logs.map((log, index) => {
+                    const timestamp = new Date().toLocaleTimeString('en-US', { hour12: false })
+                    const isWarn = log.includes("[WARN]")
+                    const isError = log.includes("[ERROR]")
+                    const isSuccess = log.includes("success") || log.includes("started")
+                    
+                    return (
+                      <div
+                        key={index}
+                        className="group flex items-start gap-3 rounded px-2 py-1 transition-colors hover:bg-white/[0.02]"
+                      >
+                        <span className="shrink-0 text-[10px] text-muted-foreground/30 tabular-nums">
+                          {String(index + 1).padStart(2, '0')}
+                        </span>
+                        <span className={`shrink-0 font-bold ${
+                          isError ? "text-red-500" : isWarn ? "text-amber-500" : isSuccess ? "text-emerald-500" : "text-cyan-500"
+                        }`}>
+                          {isError ? "ERR" : isWarn ? "WRN" : isSuccess ? "OK " : "INF"}
+                        </span>
+                        <span className={`flex-1 ${
+                          isError ? "text-red-400/90" : isWarn ? "text-amber-400/90" : isSuccess ? "text-emerald-400/90" : "text-muted-foreground/80"
+                        }`}>
+                          {log.replace(/\[(INFO|WARN|ERROR)\]\s*/, '')}
+                        </span>
+                      </div>
+                    )
+                  })}
                   <div ref={logEndRef} />
+                </div>
+                
+                {/* Console Footer */}
+                <div className="flex items-center gap-2 border-t border-border/20 bg-[#111118] px-4 py-2">
+                  <div className={`h-2 w-2 rounded-full ${isRunning ? 'animate-pulse bg-emerald-500' : 'bg-muted-foreground/30'}`} />
+                  <span className="text-[10px] font-medium text-muted-foreground/50">
+                    {isRunning ? 'Process running...' : 'Ready'}
+                  </span>
                 </div>
               </div>
             </div>
@@ -112,7 +150,7 @@ export default function Home() {
               {isRunning ? (
                 <button
                   onClick={handleStop}
-                  className="flex items-center justify-center gap-2 rounded-full bg-destructive px-14 py-4 text-base font-bold tracking-wider text-destructive-foreground transition-all hover:bg-destructive/90"
+                  className="flex items-center justify-center gap-2 rounded-full border border-red-900/50 bg-red-950/80 px-14 py-4 text-base font-bold tracking-wider text-red-400 transition-all hover:bg-red-900/60"
                 >
                   <Square className="h-5 w-5 fill-current" />
                   STOP

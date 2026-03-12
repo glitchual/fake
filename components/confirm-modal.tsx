@@ -85,7 +85,7 @@ export function ConfirmModal({
             onClick={handleConfirm}
             className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
               variant === "destructive"
-                ? "bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                ? "border border-red-900/50 bg-red-950/80 text-red-300 hover:bg-red-900/60"
                 : "bg-primary text-primary-foreground hover:bg-primary/90"
             }`}
           >

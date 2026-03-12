@@ -31,7 +31,7 @@ export default function SessionsPage() {
 
   return (
     <AppLayout activeNav="SESSIONS">
-      <div className="flex h-full w-full max-w-3xl flex-col">
+      <div className="flex h-full w-full flex-col">
         <div className="glass-panel panel-glow flex flex-1 flex-col p-6">
           <h2 className="text-center text-2xl font-bold tracking-[0.25em] text-foreground">
             SESSIONS
@@ -100,7 +100,7 @@ function SessionItem({ session, onStop }: { session: Session; onStop: () => void
             </span>
             <button
               onClick={onStop}
-              className="rounded-full bg-destructive/80 px-4 py-1.5 text-xs font-bold text-destructive-foreground transition-colors hover:bg-destructive"
+              className="rounded-full border border-red-900/50 bg-red-950/80 px-4 py-1.5 text-xs font-bold text-red-300 transition-colors hover:bg-red-900/60"
             >
               STOP
             </button>
