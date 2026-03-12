@@ -6,7 +6,6 @@ export function Logo365({ className }: { className?: string }) {
       xmlns="http://www.w3.org/2000/svg"
       preserveAspectRatio="xMidYMid meet"
       fill="none"
-      style={{ display: 'block', width: '100%', height: '100%' }}
     >
       <defs>
         <style>

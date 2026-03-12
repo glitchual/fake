@@ -150,7 +150,7 @@ export default function Home() {
               {isRunning ? (
                 <button
                   onClick={handleStop}
-                  className="flex items-center justify-center gap-2 rounded-full bg-destructive px-14 py-4 text-base font-bold tracking-wider text-destructive-foreground transition-all hover:bg-destructive/90"
+                  className="flex items-center justify-center gap-2 rounded-full border border-red-900/50 bg-red-950/80 px-14 py-4 text-base font-bold tracking-wider text-red-400 transition-all hover:bg-red-900/60"
                 >
                   <Square className="h-5 w-5 fill-current" />
                   STOP
